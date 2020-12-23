@@ -26,7 +26,7 @@ class MeanAggregator(Layer):
         else:
             name = ''
 
-        with tf.variable_scope(self.name + name + '_vars'):
+        with tf.compat.v1.variable_scope(self.name + name + '_vars'):
             self.vars['neigh_weights'] = glorot([neigh_input_dim, output_dim],
                                                         name='neigh_weights')
             self.vars['self_weights'] = glorot([input_dim, output_dim],

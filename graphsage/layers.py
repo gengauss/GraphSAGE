@@ -2,6 +2,7 @@ from __future__ import division
 from __future__ import print_function
 
 import tensorflow.compat.v1 as tf
+tf.disable_v2_behavior()
 
 from graphsage.inits import zeros
 
@@ -93,8 +94,10 @@ class Dense(Layer):
         with tf.variable_scope(self.name + '_vars'):
             self.vars['weights'] = tf.get_variable('weights', shape=(input_dim, output_dim),
                                          dtype=tf.float32, 
-                                         initializer=tf.contrib.layers.xavier_initializer(),
-                                         regularizer=tf.contrib.layers.l2_regularizer(FLAGS.weight_decay))
+                                         # initializer=tf.contrib.layers.xavier_initializer(),
+                                         initializer=tf.truncated_normal_initializer(stddev=0.1),
+                                         # regularizer=tf.contrib.layers.l2_regularizer(FLAGS.weight_decay)
+                                         regularizer=tf.keras.regularizers.L2(FLAGS.weight_decay))
             if self.bias:
                 self.vars['bias'] = zeros([output_dim], name='bias')
 

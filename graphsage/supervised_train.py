@@ -110,6 +110,7 @@ def incremental_evaluate(sess, model, minibatch_iter, size, test=False):
     return np.mean(val_losses), f1_scores[0], f1_scores[1], (time.time() - t_test)
 
 def construct_placeholders(num_classes):
+    tf.compat.v1.disable_eager_execution()
     # Define placeholders
     placeholders = {
         'labels' : tf.placeholder(tf.float32, shape=(None, num_classes), name='labels'),
