@@ -3,6 +3,7 @@ import tensorflow as tf
 from .layers import Layer, Dense
 from .inits import glorot, zeros
 
+
 class MeanAggregator(Layer):
     """
     Aggregates via mean followed by matmul and non-linearity.
@@ -62,6 +63,7 @@ class MeanAggregator(Layer):
             output += self.vars['bias']
        
         return self.act(output)
+
 
 class GCNAggregator(Layer):
     """
@@ -143,18 +145,16 @@ class MaxPoolingAggregator(Layer):
 
         self.mlp_layers = []
         self.mlp_layers.append(Dense(input_dim=neigh_input_dim,
-                                 output_dim=hidden_dim,
-                                 act=tf.nn.relu,
-                                 dropout=dropout,
-                                 sparse_inputs=False,
-                                 logging=self.logging))
+                                     output_dim=hidden_dim,
+                                     act=tf.nn.relu,
+                                     dropout=dropout,
+                                     sparse_inputs=False,
+                                     logging=self.logging))
 
         with tf.variable_scope(self.name + name + '_vars'):
-            self.vars['neigh_weights'] = glorot([hidden_dim, output_dim],
-                                                        name='neigh_weights')
+            self.vars['neigh_weights'] = glorot([hidden_dim, output_dim], name='neigh_weights')
            
-            self.vars['self_weights'] = glorot([input_dim, output_dim],
-                                                        name='self_weights')
+            self.vars['self_weights'] = glorot([input_dim, output_dim], name='self_weights')
             if self.bias:
                 self.vars['bias'] = zeros([self.output_dim], name='bias')
 
@@ -194,11 +194,12 @@ class MaxPoolingAggregator(Layer):
        
         return self.act(output)
 
+
 class MeanPoolingAggregator(Layer):
     """ Aggregates via mean-pooling over MLP functions.
     """
     def __init__(self, input_dim, output_dim, model_size="small", neigh_input_dim=None,
-            dropout=0., bias=False, act=tf.nn.relu, name=None, concat=False, **kwargs):
+                 dropout=0., bias=False, act=tf.nn.relu, name=None, concat=False, **kwargs):
         super(MeanPoolingAggregator, self).__init__(**kwargs)
 
         self.dropout = dropout
@@ -221,18 +222,16 @@ class MeanPoolingAggregator(Layer):
 
         self.mlp_layers = []
         self.mlp_layers.append(Dense(input_dim=neigh_input_dim,
-                                 output_dim=hidden_dim,
-                                 act=tf.nn.relu,
-                                 dropout=dropout,
-                                 sparse_inputs=False,
-                                 logging=self.logging))
+                                     output_dim=hidden_dim,
+                                     act=tf.nn.relu,
+                                     dropout=dropout,
+                                     sparse_inputs=False,
+                                     logging=self.logging))
 
         with tf.variable_scope(self.name + name + '_vars'):
-            self.vars['neigh_weights'] = glorot([hidden_dim, output_dim],
-                                                        name='neigh_weights')
+            self.vars['neigh_weights'] = glorot([hidden_dim, output_dim], name='neigh_weights')
            
-            self.vars['self_weights'] = glorot([input_dim, output_dim],
-                                                        name='self_weights')
+            self.vars['self_weights'] = glorot([input_dim, output_dim], name='self_weights')
             if self.bias:
                 self.vars['bias'] = zeros([self.output_dim], name='bias')
 
@@ -302,25 +301,22 @@ class TwoMaxLayerPoolingAggregator(Layer):
 
         self.mlp_layers = []
         self.mlp_layers.append(Dense(input_dim=neigh_input_dim,
-                                 output_dim=hidden_dim_1,
-                                 act=tf.nn.relu,
-                                 dropout=dropout,
-                                 sparse_inputs=False,
-                                 logging=self.logging))
+                                     output_dim=hidden_dim_1,
+                                     act=tf.nn.relu,
+                                     dropout=dropout,
+                                     sparse_inputs=False,
+                                     logging=self.logging))
         self.mlp_layers.append(Dense(input_dim=hidden_dim_1,
-                                 output_dim=hidden_dim_2,
-                                 act=tf.nn.relu,
-                                 dropout=dropout,
-                                 sparse_inputs=False,
-                                 logging=self.logging))
-
+                                     output_dim=hidden_dim_2,
+                                     act=tf.nn.relu,
+                                     dropout=dropout,
+                                     sparse_inputs=False,
+                                     logging=self.logging))
 
         with tf.variable_scope(self.name + name + '_vars'):
-            self.vars['neigh_weights'] = glorot([hidden_dim_2, output_dim],
-                                                        name='neigh_weights')
+            self.vars['neigh_weights'] = glorot([hidden_dim_2, output_dim], name='neigh_weights')
            
-            self.vars['self_weights'] = glorot([input_dim, output_dim],
-                                                        name='self_weights')
+            self.vars['self_weights'] = glorot([input_dim, output_dim], name='self_weights')
             if self.bias:
                 self.vars['bias'] = zeros([self.output_dim], name='bias')
 
@@ -360,11 +356,12 @@ class TwoMaxLayerPoolingAggregator(Layer):
        
         return self.act(output)
 
+
 class SeqAggregator(Layer):
     """ Aggregates via a standard LSTM.
     """
     def __init__(self, input_dim, output_dim, model_size="small", neigh_input_dim=None,
-            dropout=0., bias=False, act=tf.nn.relu, name=None,  concat=False, **kwargs):
+                 dropout=0., bias=False, act=tf.nn.relu, name=None,  concat=False, **kwargs):
         super(SeqAggregator, self).__init__(**kwargs)
 
         self.dropout = dropout
@@ -386,11 +383,9 @@ class SeqAggregator(Layer):
             hidden_dim = self.hidden_dim = 256
 
         with tf.variable_scope(self.name + name + '_vars'):
-            self.vars['neigh_weights'] = glorot([hidden_dim, output_dim],
-                                                        name='neigh_weights')
+            self.vars['neigh_weights'] = glorot([hidden_dim, output_dim], name='neigh_weights')
            
-            self.vars['self_weights'] = glorot([input_dim, output_dim],
-                                                        name='self_weights')
+            self.vars['self_weights'] = glorot([input_dim, output_dim], name='self_weights')
             if self.bias:
                 self.vars['bias'] = zeros([self.output_dim], name='bias')
 

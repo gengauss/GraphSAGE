@@ -2,8 +2,8 @@ from __future__ import division
 from __future__ import print_function
 
 import tensorflow.compat.v1 as tf
-tf.disable_v2_behavior()
 
+tf.disable_v2_behavior()
 from graphsage.inits import zeros
 
 flags = tf.app.flags
@@ -17,6 +17,7 @@ FLAGS = flags.FLAGS
 # global unique layer ID dictionary for layer name assignment
 _LAYER_UIDS = {}
 
+
 def get_layer_uid(layer_name=''):
     """Helper function, assigns unique layer IDs."""
     if layer_name not in _LAYER_UIDS:
@@ -25,6 +26,7 @@ def get_layer_uid(layer_name=''):
     else:
         _LAYER_UIDS[layer_name] += 1
         return _LAYER_UIDS[layer_name]
+
 
 class Layer(object):
     """Base layer class. Defines basic API for all layer objects.
@@ -73,8 +75,9 @@ class Layer(object):
 
 class Dense(Layer):
     """Dense layer."""
-    def __init__(self, input_dim, output_dim, dropout=0., 
-                 act=tf.nn.relu, placeholders=None, bias=True, featureless=False, 
+
+    def __init__(self, input_dim, output_dim, dropout=0.,
+                 act=tf.nn.relu, placeholders=None, bias=True, featureless=False,
                  sparse_inputs=False, **kwargs):
         super(Dense, self).__init__(**kwargs)
 
@@ -93,11 +96,11 @@ class Dense(Layer):
 
         with tf.variable_scope(self.name + '_vars'):
             self.vars['weights'] = tf.get_variable('weights', shape=(input_dim, output_dim),
-                                         dtype=tf.float32, 
-                                         # initializer=tf.contrib.layers.xavier_initializer(),
-                                         initializer=tf.truncated_normal_initializer(stddev=0.1),
-                                         # regularizer=tf.contrib.layers.l2_regularizer(FLAGS.weight_decay)
-                                         regularizer=tf.keras.regularizers.L2(FLAGS.weight_decay))
+                                                   dtype=tf.float32,
+                                                   # initializer=tf.contrib.layers.xavier_initializer(),
+                                                   initializer=tf.truncated_normal_initializer(stddev=0.1),
+                                                   # regularizer=tf.contrib.layers.l2_regularizer(FLAGS.weight_decay)
+                                                   regularizer=tf.keras.regularizers.L2(FLAGS.weight_decay))
             if self.bias:
                 self.vars['bias'] = zeros([output_dim], name='bias')
 
@@ -107,7 +110,7 @@ class Dense(Layer):
     def _call(self, inputs):
         x = inputs
 
-        x = tf.nn.dropout(x, 1-self.dropout)
+        x = tf.nn.dropout(x, 1 - self.dropout)
 
         # transform
         output = tf.matmul(x, self.vars['weights'])

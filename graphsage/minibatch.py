@@ -20,9 +20,9 @@ class EdgeMinibatchIterator(object):
     fixed_n2v -- signals that the iterator is being used to retrain n2v with only existing nodes as context
     """
     def __init__(self, G, id2idx, 
-            placeholders, context_pairs=None, batch_size=100, max_degree=25,
-            n2v_retrain=False, fixed_n2v=False,
-            **kwargs):
+                 placeholders, context_pairs=None, batch_size=100, max_degree=25,
+                 n2v_retrain=False, fixed_n2v=False,
+                 **kwargs):
 
         self.G = G
         self.nodes = G.nodes()
@@ -175,6 +175,7 @@ class EdgeMinibatchIterator(object):
         self.nodes = np.random.permutation(self.nodes)
         self.batch_num = 0
 
+
 class NodeMinibatchIterator(object):
     
     """ 
@@ -189,9 +190,9 @@ class NodeMinibatchIterator(object):
     max_degree -- maximum size of the downsampled adjacency lists
     """
     def __init__(self, G, id2idx, 
-            placeholders, label_map, num_classes, 
-            batch_size=100, max_degree=25,
-            **kwargs):
+                 placeholders, label_map, num_classes,
+                 batch_size=100, max_degree=25,
+                 **kwargs):
 
         self.G = G
         self.nodes = G.nodes()
